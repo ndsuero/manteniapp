@@ -1,0 +1,97 @@
+<!-- tickets/templates/tickets/ticket_form.html -->
+
+{% extends "base.html" %}
+{% block title %}{{ title }} — ManteniApp{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0 fw-bold">
+                    <i class="bi bi-pencil-square"></i> {{ title }}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <!-- 
+                        csrf_token is a SECRET STAMP that proves this form
+                        was submitted from YOUR website, not by a hacker.
+                        ALWAYS include it in every form. 
+                    -->
+
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Title *</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                            <div class="text-danger small">
+                                {{ form.title.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Machine Name *</label>
+                            {{ form.machine_name }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Location</label>
+                            {{ form.location }}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Description *</label>
+                            {{ form.description }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Priority</label>
+                            {{ form.priority }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Status</label>
+                            {{ form.status }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">
+                                Maintenance Type
+                            </label>
+                            {{ form.maintenance_type }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Assign To</label>
+                            {{ form.assigned_to }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">
+                                Scheduled Date
+                            </label>
+                            {{ form.scheduled_date }}
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-check-lg"></i> {{ btn_label }}
+                        </button>
+                        <a href="{% url 'tickets:ticket_list' %}" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
