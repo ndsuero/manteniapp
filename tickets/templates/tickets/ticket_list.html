@@ -1,0 +1,170 @@
+<!-- tickets/templates/tickets/ticket_list.html -->
+
+{% extends "base.html" %}
+
+{% block title %}Tickets — ManteniApp{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">
+        <i class="bi bi-ticket-detailed text-primary"></i>
+        Maintenance Tickets
+    </h2>
+    <a href="{% url 'tickets:ticket_create' %}" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Report Fault
+    </a>
+</div>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card text-center p-3">
+            <div class="fs-1 fw-bold text-primary">{{ total_count }}</div>
+            <div class="text-muted small">Total Tickets</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card text-center p-3">
+            <div class="fs-1 fw-bold text-info">{{ open_count }}</div>
+            <div class="text-muted small">Open</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card text-center p-3">
+            <div class="fs-1 fw-bold text-warning">{{ in_progress_count }}</div>
+            <div class="text-muted small">In Progress</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card text-center p-3">
+            <div class="fs-1 fw-bold text-danger">{{ critical_count }}</div>
+            <div class="text-muted small">Critical</div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Bar -->
+<div class="card mb-4">
+    <div class="card-body py-2">
+        <form method="GET" class="row g-2 align-items-center">
+            <div class="col-auto">
+                <label class="col-form-label fw-bold">
+                    <i class="bi bi-funnel"></i> Filter:
+                </label>
+            </div>
+            <div class="col-auto">
+                <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Statuses</option>
+                    <option value="OPEN" {% if status_filter=='OPEN' %}selected{% endif %}>Open</option>
+                    <option value="IN_PROGRESS" {% if status_filter=='IN_PROGRESS' %}selected{% endif %}>In Progress
+                    </option>
+                    <option value="RESOLVED" {% if status_filter=='RESOLVED' %}selected{% endif %}>Resolved</option>
+                    <option value="CLOSED" {% if status_filter=='CLOSED' %}selected{% endif %}>Closed</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <select name="priority" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Priorities</option>
+                    <option value="LOW" {% if priority_filter=='LOW' %}selected{% endif %}>Low</option>
+                    <option value="MEDIUM" {% if priority_filter=='MEDIUM' %}selected{% endif %}>Medium</option>
+                    <option value="HIGH" {% if priority_filter=='HIGH' %}selected{% endif %}>High</option>
+                    <option value="CRITICAL" {% if priority_filter=='CRITICAL' %}selected{% endif %}>Critical</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <select name="type" class="form-select form-select-sm" onchange="this.form.submit()">
+                    <option value="">All Types</option>
+                    <option value="PREVENTIVE" {% if type_filter=='PREVENTIVE' %}selected{% endif %}>Preventive</option>
+                    <option value="CORRECTIVE" {% if type_filter=='CORRECTIVE' %}selected{% endif %}>Corrective</option>
+                    <option value="SCHEDULED" {% if type_filter=='SCHEDULED' %}selected{% endif %}>Scheduled</option>
+                </select>
+            </div>
+            {% if status_filter or priority_filter or type_filter %}
+            <div class="col-auto">
+                <a href="{% url 'tickets:ticket_list' %}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bi bi-x"></i> Clear
+                </a>
+            </div>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<!-- Tickets Table -->
+<div class="card">
+    <div class="card-body p-0">
+        {% if tickets %}
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Machine</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Type</th>
+                        <th>Reported By</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td class="text-muted small">{{ ticket.pk }}</td>
+                        <td>
+                            <a href="{% url 'tickets:ticket_detail' ticket.pk %}" class="fw-bold text-decoration-none">
+                                {{ ticket.title }}
+                            </a>
+                            {% if ticket.is_urgent %}
+                            <i class="bi bi-exclamation-triangle-fill text-danger ms-1"></i>
+                            {% endif %}
+                        </td>
+                        <td>{{ ticket.machine_name }}</td>
+                        <td>
+                            <span class="badge badge-{{ ticket.priority }}">
+                                {{ ticket.get_priority_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge badge-{{ ticket.status }}">
+                                {{ ticket.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="text-muted small">
+                                {{ ticket.get_maintenance_type_display }}
+                            </span>
+                        </td>
+                        <td>{{ ticket.reported_by.username }}</td>
+                        <td class="text-muted small">
+                            {{ ticket.created_at|date:"M d, Y" }}
+                        </td>
+                        <td>
+                            <a href="{% url 'tickets:ticket_edit' ticket.pk %}"
+                                class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <!-- Empty state -->
+        <div class="text-center py-5">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <p class="text-muted mt-3">No tickets found.</p>
+            <a href="{% url 'tickets:ticket_create' %}" class="btn btn-primary">
+                Report First Fault
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
