@@ -17,10 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # include() = "go look in tickets/urls.py for more paths"
+    path(
+        "tickets/", include("tickets.urls")
+    ),  # include() = "go look in tickets/urls.py for more paths"
     # Like a road sign pointing to a more detailed map
-    path("tickets/", include("tickets.urls")),
+    # Redirect the homepage to /tickets/
+    path("", RedirectView.as_view(url="/tickets/")),
 ]
