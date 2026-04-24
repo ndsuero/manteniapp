@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .models import Ticket
 
-# from .forms import TicketForm  # We'll create this next!
+from .forms import TicketForm  # We'll create this next!
 
 
 # @login_required is a "decorator" - think of it as a BOUNCER at a club door
@@ -132,30 +132,16 @@ def ticket_edit(request, pk):
 
 
 @login_required
-def ticket_edit(request, pk):
-    """Edit an existing ticket."""
+def ticket_delete(request, pk):
+    """Delete a ticket (only on POST for safety)."""
 
     ticket = get_object_or_404(Ticket, pk=pk)
 
     if request.method == "POST":
-        # Pre-fill form with existing data, then overlay new data
-        form = TicketForm(request.POST, instance=ticket)
+        title = ticket.title
+        ticket.delete()
+        messages.success(request, f'🗑️ Ticket "{title}" deleted.')
+        return redirect("ticket_list")
 
-        if form.is_valid():
-            form.save()
-            messages.success(request, f"✅ Ticket updated successfully!")
-            return redirect("ticket_detail", pk=ticket.pk)
-    else:
-        # Pre-fill the form with the ticket's current data
-        form = TicketForm(instance=ticket)
-
-    return render(
-        request,
-        "tickets/ticket_form.html",
-        {
-            "form": form,
-            "ticket": ticket,
-            "title": f"Edit: {ticket.title}",
-            "btn_label": "Save Changes",
-        },
-    )
+    # For GET, show a confirmation page
+    return render(request, "tickets/ticket_confirm_delete.html", {"ticket": ticket})
