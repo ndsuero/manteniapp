@@ -119,3 +119,11 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_DIRS = [os.path.join(BASE_DIR, "static")]
+
+# manteniapp/settings.py  (add at the very bottom)
+
+# Where to go after successful login
+LOGIN_REDIRECT_URL = '/tickets/'
+
+# Where to go after logout
+LOGOUT_REDIRECT_URL = '/accounts/login/'

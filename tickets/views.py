@@ -113,7 +113,7 @@ def ticket_edit(request, pk):
 
         if form.is_valid():
             form.save()
-            messages.success(request, f"✅ Ticket updated successfully!")
+            messages.success(request, f"Ticket updated successfully!")
             return redirect("ticket_detail", pk=ticket.pk)
     else:
         # Pre-fill the form with the ticket's current data
@@ -140,7 +140,7 @@ def ticket_delete(request, pk):
     if request.method == "POST":
         title = ticket.title
         ticket.delete()
-        messages.success(request, f'🗑️ Ticket "{title}" deleted.')
+        messages.success(request, f'Ticket "{title}" deleted.')
         return redirect("ticket_list")
 
     # For GET, show a confirmation page

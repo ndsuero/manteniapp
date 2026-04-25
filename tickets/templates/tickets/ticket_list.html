@@ -57,28 +57,28 @@
             <div class="col-auto">
                 <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
                     <option value="">All Statuses</option>
-                    <option value="OPEN" {% if status_filter=='OPEN' %}selected{% endif %}>Open</option>
-                    <option value="IN_PROGRESS" {% if status_filter=='IN_PROGRESS' %}selected{% endif %}>In Progress
+                    <option value="OPEN" {% if status_filter == "OPEN" %}selected{% endif %}>Open</option>
+                    <option value="IN_PROGRESS" {% if status_filter == "IN_PROGRESS" %}selected{% endif %}>In Progress
                     </option>
-                    <option value="RESOLVED" {% if status_filter=='RESOLVED' %}selected{% endif %}>Resolved</option>
-                    <option value="CLOSED" {% if status_filter=='CLOSED' %}selected{% endif %}>Closed</option>
+                    <option value="RESOLVED" {% if status_filter == "RESOLVED" %}selected{% endif %}>Resolved</option>
+                    <option value="CLOSED" {% if status_filter == "CLOSED" %}selected{% endif %}>Closed</option>
                 </select>
             </div>
             <div class="col-auto">
                 <select name="priority" class="form-select form-select-sm" onchange="this.form.submit()">
                     <option value="">All Priorities</option>
-                    <option value="LOW" {% if priority_filter=='LOW' %}selected{% endif %}>Low</option>
-                    <option value="MEDIUM" {% if priority_filter=='MEDIUM' %}selected{% endif %}>Medium</option>
-                    <option value="HIGH" {% if priority_filter=='HIGH' %}selected{% endif %}>High</option>
-                    <option value="CRITICAL" {% if priority_filter=='CRITICAL' %}selected{% endif %}>Critical</option>
+                    <option value="LOW" {% if priority_filter == "LOW" %}selected{% endif %}>Low</option>
+                    <option value="MEDIUM" {% if priority_filter == "MEDIUM" %}selected{% endif %}>Medium</option> 
+                    <option value="HIGH" {% if priority_filter == "HIGH" %}selected{% endif %}>High</option>
+                    <option value="CRITICAL" {% if priority_filter == "CRITICAL" %}selected{% endif %}>Critical</option>
                 </select>
             </div>
             <div class="col-auto">
                 <select name="type" class="form-select form-select-sm" onchange="this.form.submit()">
                     <option value="">All Types</option>
-                    <option value="PREVENTIVE" {% if type_filter=='PREVENTIVE' %}selected{% endif %}>Preventive</option>
-                    <option value="CORRECTIVE" {% if type_filter=='CORRECTIVE' %}selected{% endif %}>Corrective</option>
-                    <option value="SCHEDULED" {% if type_filter=='SCHEDULED' %}selected{% endif %}>Scheduled</option>
+                    <option value="PREVENTIVE" {% if type_filter == "PREVENTIVE" %}selected{% endif %}>Preventive</option>
+                    <option value="CORRECTIVE" {% if type_filter == "CORRECTIVE" %}selected{% endif %}>Corrective</option>
+                    <option value="SCHEDULED" {% if type_filter == "SCHEDULED" %}selected{% endif %}>Scheduled</option>
                 </select>
             </div>
             {% if status_filter or priority_filter or type_filter %}

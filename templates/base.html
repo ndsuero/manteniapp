@@ -169,9 +169,14 @@
                                 <hr class="dropdown-divider">
                             </li>
                             <li>
-                                <a class="dropdown-item text-danger" href="/accounts/logout/">
-                                    <i class="bi bi-box-arrow-right"></i> Logout
-                                </a>
+                                <!-- ADD this instead — a form that sends POST -->
+                                <form method="POST" action="/accounts/logout/" class="d-inline">
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                        class="dropdown-item text-danger border-0 bg-transparent w-100 text-start">
+                                        <i class="bi bi-box-arrow-right"></i> Logout
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </li>

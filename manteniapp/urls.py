@@ -20,11 +20,16 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path(
-        "tickets/", include("tickets.urls")
-    ),  # include() = "go look in tickets/urls.py for more paths"
-    # Like a road sign pointing to a more detailed map
+    path('admin/', admin.site.urls),
+
+     # include() = "go look in tickets/urls.py for more paths" //  # Like a road sign pointing to a more detailed map
+    path('tickets/', include('tickets.urls')), 
+   
+
+    #This gives us login/logout for FREE from Django
+    path('accounts/', include('django.contrib.auth.urls')),
+
+
     # Redirect the homepage to /tickets/
-    path("", RedirectView.as_view(url="/tickets/")),
+    path('', RedirectView.as_view(url='/tickets/')),
 ]

@@ -68,6 +68,14 @@ class Ticket(models.Model):
         User, on_delete=models.CASCADE, related_name="reported_tickets"
     )
 
+    assigned_to = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_tickets'
+    )
+
     # Timestamps - Django fills these in AUTOMATICALLY
     created_at = models.DateTimeField(auto_now_add=True)  # Set once, on creation
     update_at = models.DateTimeField(auto_now=True)  # Updates every time you save
