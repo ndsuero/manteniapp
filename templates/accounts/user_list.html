@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Manage Users — ManteniApp{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">
+        <i class="bi bi-people text-primary"></i> Manage Users
+    </h2>
+    <a href="{% url 'accounts:register' %}" class="btn btn-primary">
+        <i class="bi bi-person-plus"></i> Add User
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>User</th>
+                    <th>Department</th>
+                    <th>Role</th>
+                    <th>Tickets</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>
+                        <div class="fw-bold">{{ u.get_full_name|default:u.username }}</div>
+                        <div class="text-muted small">{{ u.email }}</div>
+                    </td>
+                    <td>{{ u.profile.department|default:"—" }}</td>
+                    <td>
+                        <span class="badge 
+                            {% if u.profile.is_admin %}bg-warning text-dark
+                            {% else %}bg-info{% endif %}">
+                            {{ u.profile.get_role_display }}
+                        </span>
+                    </td>
+                    <td>{{ u.reported_tickets.count }}</td>
+                    <td>
+                        {% if u != request.user %}
+                            <form method="POST"
+                                  action="{% url 'accounts:promote_user' u.id %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="btn btn-sm 
+                                        {% if u.profile.is_admin %}btn-outline-secondary
+                                        {% else %}btn-outline-warning{% endif %}">
+                                    {% if u.profile.is_admin %}
+                                        <i class="bi bi-arrow-down-circle"></i> 
+                                        Make Technician
+                                    {% else %}
+                                        <i class="bi bi-arrow-up-circle"></i> 
+                                        Make Admin
+                                    {% endif %}
+                                </button>
+                            </form>
+                        {% else %}
+                            <span class="text-muted small">That's you!</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
