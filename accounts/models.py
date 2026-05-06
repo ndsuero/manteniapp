@@ -9,8 +9,8 @@ from django.dispatch import receiver
 class Profile(models.Model):
 
     class Role(models.TextChoices):
-        ADMIN = "ADMIN", "Administrator"
-        TECHNICIAN = "TECHNICIAN", "Technician"
+        ADMIN = 'ADMIN', 'Administrator'
+        TECHNICIAN = 'TECHNICIAN', 'Technician'
 
     # OneToOneField = each User gets EXACTLY one Profile
     # Like each person gets exactly one ID card
