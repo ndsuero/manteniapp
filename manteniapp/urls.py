@@ -29,6 +29,8 @@ urlpatterns = [
     #This gives us login/logout for FREE from Django
     path('accounts/', include('django.contrib.auth.urls')),
 
+    #
+    path('accounts/', include('accounts.urls')), 
 
     # Redirect the homepage to /tickets/
     path('', RedirectView.as_view(url='/tickets/')),
