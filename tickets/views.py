@@ -137,11 +137,16 @@ def ticket_delete(request, pk):
 
     ticket = get_object_or_404(Ticket, pk=pk)
 
+    # Only admins can delete tickets
+    if not request.user.profile.is_admin:
+        messages.error(request, "Only Administrators can delete tickets.")
+        return redirect("tickets:ticket_detail", pk=pk)
+
     if request.method == "POST":
         title = ticket.title
         ticket.delete()
         messages.success(request, f'Ticket "{title}" deleted.')
-        return redirect("ticket_list")
+        return redirect("tickets:ticket_list")
 
     # For GET, show a confirmation page
     return render(request, "tickets/ticket_confirm_delete.html", {"ticket": ticket})

@@ -161,9 +161,15 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item" href="#">
+                                <!-- ✅ Replace with these two items -->
+                                <a class="dropdown-item" href="{% url 'accounts:profile' %}">
                                     <i class="bi bi-person"></i> Profile
                                 </a>
+                                {% if request.user.profile.is_admin %}
+                                <a class="dropdown-item" href="{% url 'accounts:user_list' %}">
+                                    <i class="bi bi-people"></i> Manage Users
+                                </a>
+                                {% endif %}
                             </li>
                             <li>
                                 <hr class="dropdown-divider">
